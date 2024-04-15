@@ -85,27 +85,20 @@ print("q:", q) # Print q
 
 
 # Get a message from the user
-message = input("enter your message:") # Ask the user for a message
-
-# Encode the message into ASCII
-message_encoded = [ord(c) for c in message] # Convert each character in the message to its ASCII value
-
-# Encrypt the message
-ciphertext =[pow(c, e , n) for c in message_encoded] # Raise each ASCII value to the power of e modulo n
+message = int(input("enter your number:")) # Ask the user for a message
 
 # Print the ciphertext
 prnt_cipher = int(input("enter 1 to print cypher text or 0 to to skip: ")) # Ask the user if they want to print the ciphertext
 if prnt_cipher == 1: # If the user entered 1
-    print("the cipher text is", ciphertext) # Print the ciphertext
+    cipher = pow(message, e) % n #cipher the message
+    print("the cipher text is", cipher) # Print the ciphertext
 
-# Decrypt the ciphertext
-message_encoded = [pow(ch, d, n) for ch in ciphertext] # Raise each value in the ciphertext to the power of d modulo n
-message = "".join(chr(ch) for ch in message_encoded) # Convert each value back to a character and join them together to get the message
 
 # Print the decrypted message
 prnt_decrypt = int(input("enter 1 to print the decryypted message or 0 to skip: ")) # Ask the user if they want to print the decrypted message
 if prnt_decrypt == 1: # If the user entered 1
-    print("the decyrypted message is", message) # Print the decrypted message
+    decrypt = pow(cipher, d, n)
+    print("the decyrypted message is", decrypt) # Print the decrypted message
 
 # Calculate the runtime
 execution_time = time.time() - start_time # Calculate the execution time as the current time minus the start time

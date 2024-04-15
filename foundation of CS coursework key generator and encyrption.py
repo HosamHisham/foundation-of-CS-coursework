@@ -3,8 +3,7 @@ import math
 import time
 
 
-#start time for runtime
-start_time = time.time()
+
 
 # Function to check if a number is a prime number
 def prime_check(number):
@@ -15,16 +14,7 @@ def prime_check(number):
             return False
     return True
 
-# Function to generate a prime number within a given range
-"""
-def generate_prime(min_value, max_value):
-    prime = random.randint(min_value, max_value)
-    while not prime_check(prime):
-        prime = random.randint(min_value, max_value)
-    return prime
-"""
-
-
+# Function to generate a prime number within a given bit
 def generate_prime(bits):
     prime = random.getrandbits(bits)
     while not prime_check(prime):
@@ -40,7 +30,9 @@ def key_generator(e, phi):
         if (d * e) % phi == 1:
             return d
 
-
+#start time for runtime
+start_time = time.time()
+cpu_time = time.process_time()
 # start of program
 # Generate two distinct prime numbers 'p' and 'q'
 p, q = generate_prime(bits), generate_prime(bits)
@@ -93,6 +85,6 @@ execution_time = time.time() - start_time
 print(f"time executed in seconds: {execution_time:.1f}" )
 
 #calculates cpu proccess time
-print("runtime for cpu process in seconds: ", time.process_time())
+print("runtime for cpu process in seconds: ", cpu_time - time.process_time())
 
 
