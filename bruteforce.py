@@ -26,20 +26,23 @@ def bruteforce():
 
     # Factorize 'n' into 'p' and 'q'
     p, q = factor_modulus(n)
-    print("Factors of n (p, q):", p , q)
+    
+    print("p", p)
+    print("q", q)
 
     # Calculate 'phi' (Euler's totient function)
-    phi = (p - 1) * (q - 1)
+    phi_n = (p - 1) * (q - 1)
 
     # Find 'd' such that (e * d) % phi == 1
-    d = next((d for d in range(1, phi) if ((e * d) % phi == 1)), None)
+   # d = next((d for d in range(1, phi_n) if ((e * d) % phi_n == 1)), None)
 
-    # If 'd' is found, print it. Otherwise, print an error message
-    if d is not None:
-        print("Private key (d):", d)
-    else:
-        print("No suitable 'd' found.")
+    for i in range(1, phi_n):
+        if (e * i) % phi_n == 1:
+            print("private key(d)", i)
+        else:
+            i += 1
 
+  
 
 if __name__ == "__main__":
     bruteforce()

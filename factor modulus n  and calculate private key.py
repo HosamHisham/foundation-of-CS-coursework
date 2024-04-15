@@ -14,10 +14,6 @@ def extended_gcd(a , b):
     return a, x0, y0
 
 # Function to factorize the modulus 'n' into its two prime factors 'p' and 'q'
-import math
-
-import math
-
 def factor_modulus(n):
     # Start from 2 and go up to the square root of 'n'
     for i in range(2, int(math.sqrt(n)) + 1):
