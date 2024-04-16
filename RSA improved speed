@@ -1,0 +1,108 @@
+# Import the necessary modules
+import random
+import time
+
+# Record the start time of the program
+start_time = time.time()
+
+# Define a function to check if a number is prime using the Miller-Rabin primality test
+def prime_check(n, k=5): # number of tests to perform
+    if n < 2: return False # If the number is less than 2, it's not prime
+    for p in [2,3,5,7,11,13,17,19,23,29]: # Check divisibility by first few prime numbers
+        if n % p == 0: return n == p # If the number is divisible by any of these primes, it's not prime unless it is that prime
+    r, s = 0, n - 1
+    while s % 2 == 0: # Find the largest power of 2 that divides n-1
+        r += 1
+        s //= 2
+    for _ in range(k): # Perform the test k times
+        a = random.randrange(2, n - 1) # Pick a random number in [2, n-1]
+        x = pow(a, s, n) # Compute a^s mod n using fast exponentiation
+        if x == 1 or x == n - 1: # If x is 1 or n-1, the number could be prime
+            continue
+        for _ in range(r - 1): # Repeat the test r-1 times
+            x = pow(x, 2, n) # Square x and reduce modulo n
+            if x == n - 1: # If x becomes n-1, the number could be prime
+                break
+        else: # If none of the tests passed, the number is composite
+            return False
+    return True # If all tests passed, the number is probably prime
+
+# Define a function to generate a prime number with a given number of bits
+def generate_prime(bits):
+    prime = random.getrandbits(bits) # Generate a random number with the given number of bits
+    while not prime_check(prime): # Check if the number is prime
+        prime = random.getrandbits(bits) # If not, generate a new number and check again
+    return prime # Return the prime number
+
+# Ask the user for the number of bits
+bits = int(input("enter bits for program: "))
+
+# Define a function to calculate the greatest common divisor (gcd) of two numbers
+def gcd(a, b):
+    while b != 0: # While b is not zero
+        a, b = b, a % b # Swap a and b, and replace b with the remainder of a divided by b
+    return a # Return the gcd
+
+# Define a function to calculate the modular multiplicative inverse of a modulo m using the Extended Euclidean Algorithm
+def mod_inverse(a, m):
+    g, x, y = extended_gcd(a, m) # Call the extended_gcd function to get the gcd and the coefficients of Bézout's identity
+    if g != 1: # If the gcd is not 1, the modular inverse does not exist
+        raise Exception('Modular inverse does not exist')
+    else:
+        return x % m # Return the modular inverse
+
+# Define a function to calculate the greatest common divisor (gcd) and the coefficients of Bézout's identity
+def extended_gcd(a, b):
+    if a == 0: # If a is zero, the gcd is b and the coefficients are 0 and 1
+        return b, 0, 1
+    else:
+        g, x, y = extended_gcd(b % a, a) # Recursively call the function with b mod a and a
+        return g, y - (b // a) * x, x # Return the gcd and the updated coefficients
+
+# Generate two distinct prime numbers 'p' and 'q'
+p, q = generate_prime(bits), generate_prime(bits) # Generate two prime numbers with the given number of bits
+while p == q: # While p and q are the same
+    q = generate_prime(bits) # Generate a new prime number for q
+
+# Calculate 'n' and 'phi_n'
+n = p * q # Calculate n as the product of p and q
+phi_n = (p - 1) * (q - 1) # Calculate phi_n as the product of one less than p and one less than q
+
+# Generate the public key 'e'
+e = random.randint(3, phi_n - 1) # Generate a random number between 3 and phi_n - 1
+while gcd(e, phi_n) != 1: # While the gcd of e and phi_n is not 1
+    e = random.randint(3, phi_n - 1) # Generate a new random number for e
+
+# Generate the private key 'd'
+d = mod_inverse(e, phi_n) # Calculate the modular inverse of e modulo phi_n
+
+# Print the public and private keys and 'n'
+print("public key(e):", e) # Print the public key
+print("private key(d):", d) # Print the private key
+print("n:", n) # Print n
+print("p:", p) # Print p
+print("q:", q) # Print q
+
+
+# Get a message from the user
+message = int(input("enter your number:")) # Ask the user for a message
+
+# Print the ciphertext
+prnt_cipher = int(input("enter 1 to print cypher text or 0 to to skip: ")) # Ask the user if they want to print the ciphertext
+if prnt_cipher == 1: # If the user entered 1
+    cipher = pow(message, e) % n #cipher the message
+    print("the cipher text is", cipher) # Print the ciphertext
+
+
+# Print the decrypted message
+prnt_decrypt = int(input("enter 1 to print the decryypted message or 0 to skip: ")) # Ask the user if they want to print the decrypted message
+if prnt_decrypt == 1: # If the user entered 1
+    decrypt = pow(cipher, d, n)
+    print("the decyrypted message is", decrypt) # Print the decrypted message
+
+# Calculate the runtime
+execution_time = time.time() - start_time # Calculate the execution time as the current time minus the start time
+print(f"time executed in seconds: {execution_time:.1f}" ) # Print the execution time
+
+# Calculate the CPU process time
+print("runtime for cpu process in seconds: ", time.process_time()) # Print the CPU process time
