@@ -21,7 +21,7 @@ e = int(input("Enter public key: "))
 
 p, q = 0, 0
 while p * q != N:
-    p = generate_prime(1, 10000)
+    p = generate_prime(1, N)
     q = N // p
 
 phi_n = (p - 1) * (q - 1)
