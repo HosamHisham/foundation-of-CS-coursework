@@ -1,6 +1,7 @@
 import math
 import time
 
+# Extended Euclidean Algorithm to find gcd and coefficients of Bézout's identity
 def extended_gcd(a, b):
     if a == 0:
         return (b, 0, 1)
@@ -8,6 +9,7 @@ def extended_gcd(a, b):
         gcd, x, y = extended_gcd(b % a, a)
         return (gcd, y - (b // a) * x, x)
 
+# Modular multiplicative inverse function using Extended Euclidean Algorithm
 def mod_inverse(e, n):
     gcd, x, y = extended_gcd(e, n)
     if gcd != 1:
@@ -54,5 +56,5 @@ d = mod_inverse(e, phi_n)
 # Print the private key
 print("The private key (d) is:", d)
 
+# Print the runtime
 print("runtime in seconds", time.time() - start_time)
-
