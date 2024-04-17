@@ -43,10 +43,17 @@ print("p:", p)
 print("q:", q)
 
 # Find the private key (d) using the public key (e)
+found = False
 for d in range(2, phi_n):
     if (e * d) % phi_n == 1:
         print("Private key:", d)
+        found = True
         break
+
+if not found:
+    print("No suitable private key found.")
+
+
 
 # Print the runtime
 print("run time: (s)", time.time() - start_time)

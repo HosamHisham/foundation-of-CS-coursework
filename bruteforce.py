@@ -2,8 +2,8 @@ import math
 import time
 
 
-#start time for runtime
-start_time = time.time()
+
+
 
 # Function to factorize the modulus 'n' into its two prime factors 'p' and 'q'
 def factor_modulus(n):
@@ -25,6 +25,8 @@ def bruteforce():
     n = int(input("Enter n: "))
     e = int(input("Enter public key (e): "))
 
+    
+    start_time = time.time()
     # Factorize 'n' into 'p' and 'q'
     p, q = factor_modulus(n)
     
@@ -40,18 +42,20 @@ def bruteforce():
     for i in range(1, phi_n):
         if (e * i) % phi_n == 1:
             print("private key(d)", i)
+            execution_time = time.time() - start_time
+
+            print(f"time executed in seconds: {execution_time:.10f}")
         else:
             i += 1
+    #calculate runtime
+   
 
   
 
 if __name__ == "__main__":
     bruteforce()
+    
 
-#calculate runtime
-execution_time = time.time() - start_time
-
-print(f"time executed in seconds: {execution_time:.1f}")
 
 
 
