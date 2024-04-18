@@ -12,12 +12,19 @@ def prime_check(number):
 
 # Function to generate a prime number within a given range
 def generate_prime(min_value, max_value):
+    # Initialize a counter variable for generating prime numbers
+    prime_generation_count = 0
+    
     # Generate a random number between min_value and max_value
     prime = random.randint(min_value, max_value)
+    prime_generation_count += 1
+    
     # Keep generating until a prime number is found
     while not prime_check(prime):
         prime = random.randint(min_value, max_value)
-    return prime
+        prime_generation_count += 1
+    
+    return prime, prime_generation_count
 
 # Take input for n (N) and the public key (e)
 N = int(input("Enter n: "))
@@ -28,10 +35,15 @@ start_time = time.time()
 
 # Initialize p and q to be used in RSA key generation
 p, q = 0, 0
+# Initialize a counter variable for loop iterations during prime number generation
+loop_count_generation = 0
+
 # Find p and q such that their product equals N
 while p * q != N:
     # Generate a prime number for p
-    p = generate_prime(1, N)
+    p, count_p = generate_prime(1, N)
+    loop_count_generation += count_p
+    
     # Calculate q based on p
     q = N // p
 
@@ -42,9 +54,13 @@ phi_n = (p - 1) * (q - 1)
 print("p:", p)
 print("q:", q)
 
+# Initialize a counter variable for loop iterations during calculation
+loop_count_calculation = 0
+
 # Find the private key (d) using the public key (e)
 found = False
 for d in range(2, phi_n):
+    loop_count_calculation += 1
     if (e * d) % phi_n == 1:
         print("Private key:", d)
         found = True
@@ -53,7 +69,13 @@ for d in range(2, phi_n):
 if not found:
     print("No suitable private key found.")
 
+# Calculate the total number of loop iterations
+total_loop_count = loop_count_generation + loop_count_calculation
 
+# Print the number of loop iterations for prime generation and calculation
+print("Number of loop iterations for prime generation:", loop_count_generation)
+print("Number of loop iterations for calculation:", loop_count_calculation)
+print("Total number of loop iterations:", total_loop_count)
 
 # Print the runtime
-print("run time: (s)", time.time() - start_time)
+print("Runtime (s):", time.time() - start_time)

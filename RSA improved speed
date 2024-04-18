@@ -27,15 +27,25 @@ def prime_check(n, k=5): # number of tests to perform
             return False
     return True # If all tests passed, the number is probably prime
 
-# Define a function to generate a prime number with a given number of bits
 def generate_prime(bits):
-    prime = random.getrandbits(bits) # Generate a random number with the given number of bits
-    while not prime_check(prime): # Check if the number is prime
-        prime = random.getrandbits(bits) # If not, generate a new number and check again
-    return prime # Return the prime number
+    # Adjust the range of bits based on the desired output size
+    if bits == 8:
+        min_bits = 4  # Minimum bits for an 8-bit number
+        max_bits = 5  # Maximum bits for an 8-bit number
+    elif bits == 16:
+        min_bits = 8  # Minimum bits for a 16-bit number
+        max_bits = 9  # Maximum bits for a 16-bit number
+    else:
+        raise ValueError("Invalid number of bits. Must be 8 or 16.")
+
+    prime = random.getrandbits(random.randint(min_bits, max_bits))
+    while not prime_check(prime):
+        prime = random.getrandbits(random.randint(min_bits, max_bits))
+    return prime
 
 # Ask the user for the number of bits
 bits = int(input("enter bits for program: "))
+
 
 # Define a function to calculate the greatest common divisor (gcd) of two numbers
 def gcd(a, b):
@@ -75,6 +85,11 @@ while gcd(e, phi_n) != 1: # While the gcd of e and phi_n is not 1
 
 # Generate the private key 'd'
 d = mod_inverse(e, phi_n) # Calculate the modular inverse of e modulo phi_n
+
+while e == d:
+    e = random.randint(3, phi_n - 1)
+    gcd_val, x, y = extended_gcd(e, phi_n)
+    d = x % phi_n
 
 # Print the public and private keys and 'n'
 print("public key(e):", e) # Print the public key
