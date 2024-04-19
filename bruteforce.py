@@ -20,6 +20,7 @@ def bruteforce():
     # Get 'n' and 'e' from the user
     n = int(input("Enter n: "))
     e = int(input("Enter public key (e): "))
+    cipher = int(input("enter cipher: "))
 
     start_time = time.time()
     # Factorize 'n' into 'p' and 'q'
@@ -38,13 +39,14 @@ def bruteforce():
     for i in range(1, phi_n):
         if (e * i) % phi_n == 1:
             print("private key (d):", i)
+            d = i
             execution_time = time.time() - start_time
             print("Time executed in seconds:", execution_time)
             print("Number of iterations:", count)
             return  # Stop the function after finding 'd'
         else:
             count += 1
-
+    message = pow(cipher, d, n)
     # If 'd' is not found within the loop, print a message
     print("Private key (d) not found within the given range.")
     execution_time = time.time() - start_time

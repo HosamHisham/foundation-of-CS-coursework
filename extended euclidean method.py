@@ -39,6 +39,8 @@ e = int(input("Enter the public exponent: "))
 # Get 'n' (modulus) from the user
 n = int(input("Enter the modulus n: "))
 
+cipher = int(input("enter cipher: "))
+
 start_time = time.time() * 1000
 
 counter = 0  # Initialize the counter to 0
@@ -56,7 +58,8 @@ d, counter = mod_inverse(e, phi_n, counter)
 
 # Print the private key
 print("The private key (d) is:", d)
-
+message = pow(cipher, d, n)
+print("decrypted message: ", message)
 # Print the runtime
 print("Runtime in seconds:", (time.time()*1000) - start_time)
 

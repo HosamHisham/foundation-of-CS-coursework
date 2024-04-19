@@ -29,6 +29,7 @@ def generate_prime(min_value, max_value):
 # Take input for n (N) and the public key (e)
 N = int(input("Enter n: "))
 e = int(input("Enter public key: "))
+c = int(input("Enter cipher: "))
 
 # Start the timer
 start_time = time.time()
@@ -69,6 +70,8 @@ for d in range(2, phi_n):
 if not found:
     print("No suitable private key found.")
 
+message = pow(c, d, N)
+print("decrypted message: ",message)
 # Calculate the total number of loop iterations
 total_loop_count = loop_count_generation + loop_count_calculation
 
